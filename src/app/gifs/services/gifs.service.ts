@@ -21,9 +21,8 @@ export class GifsService {
 
   constructor( private http: HttpClient ) {
 
-    if( localStorage.getItem('historial') ) {
-      this._historial = JSON.parse( localStorage.getItem('historial')! );
-    }
+      this._historial = JSON.parse( localStorage.getItem('historial')! ) || [];
+      this.resultados = JSON.parse( localStorage.getItem('resultados')! );
 
   }
 
@@ -44,6 +43,7 @@ export class GifsService {
     this.http.get<SearchGifsResponse>(`https://api.giphy.com/v1/gifs/search?api_key=uTBsIVeieDOd1JVagdzqgQHA4OUUE6C1&q=${ query }&limit=10`).subscribe( ( resp ) => {
       console.log(resp.data);
       this.resultados = resp.data;
+      localStorage.setItem('resultados', JSON.stringify( this.resultados ));
     });
 
   }
